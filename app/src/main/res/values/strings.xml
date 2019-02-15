@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">Система тестирования</string>
+    <!-- activity_login  -->
+    <string name="name_author">Авторизация</string>
+    <string name="name_ng">Вы еще не зарегистрированы?</string>
+    <string name="prompt_login">Логин</string>
+    <string name="prompt_password">Пароль</string>
+    <string name="action_sign_in">Войти</string>
+
+    <!-- activity_registration-->
+    <string name="registration">Регистрация</string>>
+    <string name="fio">ФИО(полностью)</string>>
+    <string name="login_r">Логин</string>
+    <string name="password_r">Пароль</string>
+    <string name="phone">Телефон (Пример:8-800-555-35-35)</string>
+    <string name="e_mail">Email (Пример:ivanov123@mail.ru)</string>
+    <string name="position">Должность</string>
+    <string name="group">Группа</string>
+    <string name="buttonN">Зарегистрироваться</string>
+
+    <!-- page_of_test-->
+    <string name = "question">Вопрос</string>
+
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+    <!--Navigation Activity  -->
+    <string name="item_menu_tests">Тесты</string>
+    <string name="item_menu_result">Результаты теста</string>
+    <string name="item_menu_Menu">О программе</string>
+    <string name="item_about">О программе</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- fragment_tests -->
+    <string name="title_ftests">Тесты</string>
+    <!--- fragment_result-->
+    <string name="title_result">Результаты теста</string>
+    <!-- activity_edit_password-->
+    <string name="title_edit_password">Смена пароля</string>
+
+</resources>
