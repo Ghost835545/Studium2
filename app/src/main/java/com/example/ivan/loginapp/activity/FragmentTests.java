@@ -17,87 +17,83 @@ import android.widget.TextView;
 import com.example.ivan.loginapp.R;
 import com.example.ivan.loginapp.SingletTests;
 import com.example.ivan.loginapp.SingletUsers;
+import com.example.ivan.loginapp.Test;
 import com.example.ivan.loginapp.User;
 
 import java.util.List;
 
 public class FragmentTests extends Fragment {
 
-    /*private RecyclerView mTestRecyclerView;
-    private UserAdapter mAdapter;
+    private RecyclerView mTestRecyclerView;
+    private FragmentTests.TestAdapter mAdapter;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstance) {
         View view = inflater.inflate(R.layout.fragment_tests, container, false);
-        getActivity().setTitle("Тесты");
+        getActivity().setTitle("Список Тестов");
         mTestRecyclerView = (RecyclerView) view.findViewById(R.id.user_recycler_view_tests);
         mTestRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         updateUI();
         return view;
     }
 
-
     private void updateUI() {
-        SingletTests singletTests = SingletTests.get(getActivity());
-        List<Test> tests = singletTests.getTests();
-        mAdapter = new UserAdapter(tests);
+        SingletTests singletTest = SingletTests.get(getActivity());
+        List <Test> test = singletTest.getTests();
+        mAdapter = new FragmentTests.TestAdapter(test);
         mTestRecyclerView.setAdapter(mAdapter);
     }
 
-    private class TestHolder extends RecyclerView.ViewHolder
-    implements View.OnClickListener{
 
-        private TextView mSubject;
-        private TextView mTest;
+    private class TestHolder extends RecyclerView.ViewHolder {
+        private TextView mSubjectTestTextView;
+        private TextView mTitleTextTextView;
+
+
         private Test mTest;
 
         public TestHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_tests, parent, false));
 
-            mSubject = (TextView) itemView.findViewById(R.id.test_subject);
-            mTest= (TextView) itemView.findViewById(R.id.test);
-            mTest.setOnClickListener(this);
+            mSubjectTestTextView = (TextView) itemView.findViewById(R.id.test_subject);
+            mTitleTextTextView = (TextView) itemView.findViewById(R.id.test);
+
         }
+
         public void bind(Test test) {
             mTest = test;
-            mSubject.setText(mTest.getFio());
-            mEmailTextView.setText("Email: " + mUser.getEmail());
-            mGroupTextView.setText("Группа: " + mUser.getGroup().toString());
+            mSubjectTestTextView.setText(mTest.getSubject().getSubjectName());
+            mTitleTextTextView.setText (mTest.getTestName());
+
+
         }
-
-     @Override
-        public void onClick(View view){
-
-     }
-
-
 
     }
 
-    private class UserAdapter extends RecyclerView.Adapter<UserHolder> {
+    private class TestAdapter extends RecyclerView.Adapter<FragmentTests.TestHolder> {
 
-        private List<User> mUser;
+        private List<Test> mTest;
 
-        public UserAdapter(List<User> user) {
-            mUser = user;
+        public TestAdapter(List<Test> test) {
+            mTest = test;
         }
 
         @NonNull
         @Override
-        public UserHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public FragmentTests.TestHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            return new UserHolder(layoutInflater, parent);
+            return new FragmentTests.TestHolder(layoutInflater, parent);
 
         }
 
         @Override
-        public void onBindViewHolder(@NonNull UserHolder holder, int position) {
-            User user = mUser.get(position);
-            holder.bind(user);
+        public void onBindViewHolder(@NonNull FragmentTests.TestHolder holder, int position) {
+            Test test = mTest.get(position);
+            holder.bind(test);
         }
 
         @Override
         public int getItemCount() {
-            return mUser.size();
+            return mTest.size();
         }
-    }*/
+    }
 }

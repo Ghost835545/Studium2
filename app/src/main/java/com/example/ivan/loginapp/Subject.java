@@ -2,13 +2,16 @@ package com.example.ivan.loginapp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 public class Subject {
 
     private Integer idSubject;
-    private String nameSubject;
-    private Direction directions;
+    private String subjectName;
+    private Set<Direction> directions;
     @JsonIgnore
-    private Test tests;
+    private ArrayList<Test> tests;
 
     public Subject(){
 
@@ -22,27 +25,27 @@ public class Subject {
         this.idSubject = idSubject;
     }
 
-    public String getNameSubject() {
-        return nameSubject;
+    public String getSubjectName() {
+        return subjectName;
     }
 
-    public void setNameSubject(String nameSubject) {
-        this.nameSubject = nameSubject;
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
     }
 
-    public Direction getDirections() {
+    public Set<Direction> getDirections() {
         return directions;
     }
 
-    public void setDirections(Direction directions) {
+    public void setDirections(Set<Direction> directions) {
         this.directions = directions;
     }
 
-    public Test getTests() {
+    public ArrayList<Test> getTests() {
         return tests;
     }
 
-    public void setTests(Test tests) {
+    public void setTests(ArrayList<Test> tests) {
         this.tests = tests;
     }
 }

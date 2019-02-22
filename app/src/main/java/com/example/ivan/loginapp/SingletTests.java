@@ -12,7 +12,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class SingletTests {
-    /*private static SingletTests sSingletTests;
+    private static SingletTests sSingletTests;
 
     private List<Test> mTests;
 
@@ -32,30 +32,15 @@ public class SingletTests {
     public List<Test> getTests() {
         OutputUsersTask task = new OutputUsersTask();
         task.execute();
-        try {
-            //TimeUnit.MILLISECONDS.sleep(500);
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
         return mTests;
     }
-
-    //public User getUser(UUID id){
-    //for (User user : mUsers){
-    //if (user.getIdUser().equals(id)) {
-    //return user;
-    //}
-    //}
-    ;
-    //}
 
     private class OutputUsersTask extends AsyncTask<Void, Void, Test[]> {
 
         @Override
         protected Test[] doInBackground(Void... params) {
             try {
-                Test[] tests = new Connection().();
+                Test[] tests = new Connection().getTests();
                 return tests;
 
             } catch (Exception e) {
@@ -65,10 +50,12 @@ public class SingletTests {
         }
 
         protected void onPostExecute(Test[] tests) {
-
-            for (int i = 0; i < tests.length; i++) {
-                mTests.add(tests[i]);
+            if (mTests.size() > 0){
+                mTests = new ArrayList<>();
             }
+                for (int i = 0; i < tests.length; i++) {
+                    mTests.add(tests[i]);
+                }
         }
-    }*/
+    }
 }

@@ -105,7 +105,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onClick(View view) {
                 attemptLogin();
-                //startActivity(navigation);
             }
         });
 
@@ -121,10 +120,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
     }
-    public void startNavigationActivity(String Fio)
+    public void startNavigationActivity(String Fio, Integer idRole, String Namegroup, Integer idUser)
     {
         Intent intent = new Intent(this, NavigationActivity.class);
         intent.putExtra("Fio",Fio);
+        intent.putExtra("idRole",idRole);
+        intent.putExtra("Namegroup",Namegroup);
+        intent.putExtra("idUser",idUser);
         startActivity(intent);
 
     }
@@ -357,7 +359,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if (success) {
                 String Fio = user.getRole().getRoleName()+"\n"+"\n"+user.getFio();
-                startNavigationActivity(Fio);
+                Integer idRole = user.getRole().getIdRole();
+                String Namegroup = user.getGroup().getGroupName();
+                Integer idUser = user.getIdUser();
+                startNavigationActivity(Fio, idRole, Namegroup, idUser);
                 //Toast.makeText(getApplicationContext(), user.getFio()+" "+user.getEmail(), Toast.LENGTH_SHORT).show();
 
             } else {

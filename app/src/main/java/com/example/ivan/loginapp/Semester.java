@@ -3,7 +3,7 @@ package com.example.ivan.loginapp;
 public class Semester {
 
     private Integer idSemester;
-    private String semestrName;
+    private String semesterName;
     private Course course;
 
     public Semester(){
@@ -18,12 +18,12 @@ public class Semester {
         this.idSemester = idSemester;
     }
 
-    public String getSemestrName() {
-        return semestrName;
+    public String getSemesterName() {
+        return semesterName;
     }
 
-    public void setSemestrName(String semestrName) {
-        this.semestrName = semestrName;
+    public void setSemesterName(String semesterName) {
+        this.semesterName = semesterName;
     }
 
     public Course getCourse() {

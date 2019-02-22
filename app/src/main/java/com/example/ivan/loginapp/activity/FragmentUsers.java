@@ -24,6 +24,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -42,10 +43,13 @@ public class FragmentUsers extends Fragment {
 
     private RecyclerView mUserRecyclerView;
     private UserAdapter mAdapter;
+    private ProgressBar progressBar;
+
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstance) {
-       View view = inflater.inflate(R.layout.fragment_users, container, false);
+        View view = inflater.inflate(R.layout.fragment_users, container, false);
         getActivity().setTitle("Список пользователей");
+        progressBar = (ProgressBar) view.findViewById(R.id.fragment_progress_users);
         mUserRecyclerView = (RecyclerView) view.findViewById(R.id.user_recycler_view);
         mUserRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         updateUI();
@@ -53,13 +57,14 @@ public class FragmentUsers extends Fragment {
     }
 
 
+    private void updateUI( ) {
 
-    private void updateUI() {
         SingletUsers singletUser = SingletUsers.get(getActivity());
-        List<User> users = singletUser.getUsers();
+        List <User> users = singletUser.getUsers(progressBar);
         mAdapter = new UserAdapter(users);
         mUserRecyclerView.setAdapter(mAdapter);
     }
+
 
     private class UserHolder extends RecyclerView.ViewHolder {
         private TextView mTitleTextView;
@@ -72,15 +77,17 @@ public class FragmentUsers extends Fragment {
             super(inflater.inflate(R.layout.list_item_user, parent, false));
 
             mTitleTextView = (TextView) itemView.findViewById(R.id.user_title);
-            mEmailTextView = (TextView) itemView.findViewById(R.id.user_email);
             mGroupTextView = (TextView) itemView.findViewById(R.id.user_group);
+            mEmailTextView = (TextView) itemView.findViewById(R.id.user_email);
+
         }
 
         public void bind(User user) {
             mUser = user;
             mTitleTextView.setText(mUser.getFio());
-            mEmailTextView.setText("Email: " + mUser.getEmail());
             mGroupTextView.setText("Группа: " + mUser.getGroup().toString());
+            mEmailTextView.setText("Email: " + mUser.getEmail());
+
         }
 
     }

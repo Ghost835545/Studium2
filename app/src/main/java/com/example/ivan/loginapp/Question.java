@@ -2,6 +2,7 @@ package com.example.ivan.loginapp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Question {
@@ -15,7 +16,7 @@ public class Question {
     private String dirVideo;
     private User user;
     @JsonIgnore
-    private Answer answers;
+    private ArrayList<Answer> answers;
     @JsonIgnore
     private Boolean inTest;
 
@@ -95,11 +96,11 @@ public class Question {
         this.user = user;
     }
 
-    public Answer getAnswers() {
+    public ArrayList<Answer> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(Answer answers) {
+    public void setAnswers(ArrayList<Answer> answers) {
         this.answers = answers;
     }
 

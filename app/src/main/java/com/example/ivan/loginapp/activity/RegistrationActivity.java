@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
@@ -16,6 +18,7 @@ import com.example.ivan.loginapp.Group;
 import com.example.ivan.loginapp.R;
 import com.example.ivan.loginapp.Role;
 import com.example.ivan.loginapp.User;
+import com.example.ivan.loginapp.editSpinner.NothingSelectedSpinnerAdapter;
 import com.example.ivan.loginapp.rest.Connection;
 
 import java.util.ArrayList;
@@ -24,45 +27,58 @@ import java.util.List;
 
 
 public class RegistrationActivity extends AppCompatActivity {
-
-    public Role  Role;
+    public Role Role;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+        final EditText text = (EditText) findViewById(R.id.text_spinner_groups);
+        text.setVisibility(View.INVISIBLE);
         initCheckBoxGroup();
-        initSpinnerFaculty();
-        initSpinnerDirection();
+        initSpinnerSelectFaculty();
+        initSpinnerSelectDirection();
         HttpRequestTaskFaculty taskFaculty = new HttpRequestTaskFaculty(this);
         taskFaculty.execute();
         initReg();
     }
 
-    private void initCheckBoxGroup(){
-        CheckBox checkBox = findViewById(R.id.checkbox);
+
+
+    private void initCheckBoxGroup() {
+        final CheckBox checkBox = findViewById(R.id.checkbox);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
-                {
-                    Spinner spinner = findViewById(R.id.groups);
-                    spinner.setSelection(0);
+                if (isChecked) {
+                    final Spinner spinner = (Spinner) findViewById(R.id.groups);
+                    final EditText text = (EditText) findViewById(R.id.text_spinner_groups);
+                    spinner.setEnabled(false);
+                    spinner.setAdapter(null);
+                    text.setVisibility(View.VISIBLE);
                 }
+                else
+                {
+                    final Spinner spinner = (Spinner) findViewById(R.id.groups);
+                    final EditText text = (EditText) findViewById(R.id.text_spinner_groups);
+                    spinner.setEnabled(true);
+                    text.setVisibility(View.INVISIBLE);
+                }
+
             }
         });
     }
 
-    private void initSpinnerFaculty(){
+    private void initSpinnerSelectFaculty() {
         final Spinner spfaculty = findViewById(R.id.faculties);
         spfaculty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 FacultyAdapter adapter = (FacultyAdapter) spfaculty.getAdapter();
                 Faculty faculty = adapter.getItem(position);
-                HttpRequestTaskDirection taskFaculty = new HttpRequestTaskDirection( faculty.getIdFaculty());
+                HttpRequestTaskDirection taskFaculty = new HttpRequestTaskDirection(faculty.getIdFaculty());
                 taskFaculty.execute();
-
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -70,7 +86,7 @@ public class RegistrationActivity extends AppCompatActivity {
         });
     }
 
-    private void initSpinnerDirection(){
+    private void initSpinnerSelectDirection() {
         final Spinner spdirections = findViewById(R.id.directions);
         spdirections.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -80,15 +96,16 @@ public class RegistrationActivity extends AppCompatActivity {
                 HttpRequestTaskGroups taskGroups = new HttpRequestTaskGroups(directions.getIdDirection());
                 taskGroups.execute();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
     }
-    public void startActivity()
-    {
-        final Intent intent = new Intent(this,LoginActivity.class);
+
+    public void startActivity() {
+        final Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 
@@ -106,15 +123,15 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                inputRegistr(fioE.getText().toString(), loginE.getText().toString(), Security.encryptPass(passwordE.getText().toString()),(Direction)spinnerDr.getSelectedItem(),
-                        (Group)spinnerGr.getSelectedItem(), phoneE.getText().toString(), emailE.getText().toString());
+                inputRegistr(fioE.getText().toString(), loginE.getText().toString(), Security.encryptPass(passwordE.getText().toString()), (Direction) spinnerDr.getSelectedItem(),
+                        (Group) spinnerGr.getSelectedItem(), phoneE.getText().toString(), emailE.getText().toString());
 
             }
         });
 
     }
 
-    private void inputRegistr(String fio,String login, String password,Direction direction, Group group, String phone, String email) {
+    private void inputRegistr(String fio, String login, String password, Direction direction, Group group, String phone, String email) {
         User user = new User();
         user.setFio(fio);
         user.setLogin(login);
@@ -125,7 +142,7 @@ public class RegistrationActivity extends AppCompatActivity {
         user.setEmail(email);
         user.setDateReg(new Date());
         user.setDateAuth(new Date());
-        user.setStatus((byte)1);
+        user.setStatus((byte) 1);
         user.setRole(Role);
         RegistUserTask task = new RegistUserTask(user);
         task.execute();
@@ -133,6 +150,13 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private class HttpRequestTaskFaculty extends AsyncTask<Void, Void, Faculty[]> {
+
+        HttpRequestTaskFaculty(RegistrationActivity activity) {
+            this.activity = activity;
+        }
+
+        RegistrationActivity activity;
+
         @Override
         protected Faculty[] doInBackground(Void... params) {
             try {
@@ -148,29 +172,27 @@ public class RegistrationActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(Faculty[] faculties) {
-            if (faculties==null)
+            if (faculties == null)
                 return;
-            Spinner spinner = findViewById(R.id.faculties);
+
+            final Spinner spinner = findViewById(R.id.faculties);
             FacultyAdapter grad = new FacultyAdapter(RegistrationActivity.this, faculties);
             spinner.setAdapter(grad);
+
         }
 
-        HttpRequestTaskFaculty(RegistrationActivity activity) {
-            this.activity = activity;
-        }
-
-        RegistrationActivity activity;
 
     }
 
     private class HttpRequestTaskDirection extends AsyncTask<Void, Void, Direction[]> {
 
         private int idfaculty;
-        HttpRequestTaskDirection(int id)
-        {
-            idfaculty=id;
+
+        HttpRequestTaskDirection(int id) {
+            idfaculty = id;
 
         }
+
         @Override
         protected Direction[] doInBackground(Void... params) {
             try {
@@ -186,7 +208,7 @@ public class RegistrationActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(Direction[] directions) {
-            if (directions==null)
+            if (directions == null)
                 return;
             Spinner spinner = findViewById(R.id.directions);
             DirectionAdapter grad = new DirectionAdapter(RegistrationActivity.this, directions);
@@ -201,9 +223,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
         private int idDirection;
 
-        HttpRequestTaskGroups(int id){
-            idDirection=id;
+        HttpRequestTaskGroups(int id) {
+            idDirection = id;
         }
+
         @Override
         protected Group[] doInBackground(Void... params) {
             try {
@@ -220,14 +243,13 @@ public class RegistrationActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Group[] groups) {
-            if (groups ==null)
+            if (groups == null)
                 return;
             Spinner spinner = findViewById(R.id.groups);
             GroupAdapter grad = new GroupAdapter(RegistrationActivity.this, groups);
-            Role=groups[0].getRole();
+            Role = groups[0].getRole();
             spinner.setAdapter(grad);
         }
-
 
 
     }
@@ -258,15 +280,15 @@ public class RegistrationActivity extends AppCompatActivity {
             // for(Group g:groups)
             //Log.i("t1", newuser.getFio());
 
-            Toast.makeText(getApplicationContext(),  "Вы зарегистрировались!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Вы зарегистрировались!", Toast.LENGTH_SHORT).show();
             startActivity();
         }
     }
 
     private class FacultyAdapter extends ArrayAdapter<Faculty> {
 
-        FacultyAdapter(Context ob, Faculty [] faculties) {
-            super(ob, R.layout.list_item_facultes,faculties);
+        FacultyAdapter(Context ob, Faculty[] faculties) {
+            super(ob, R.layout.list_item_facultes, faculties);
         }
 
         @Override
@@ -277,14 +299,16 @@ public class RegistrationActivity extends AppCompatActivity {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_facultes, null);
             }
             ((TextView) convertView.findViewById(R.id.text_faculties)).setText(faculty.getFacultyName());
+
             return convertView;
         }
     }
 
+
     private class DirectionAdapter extends ArrayAdapter<Direction> {
 
-        DirectionAdapter(Context ob, Direction [] directions) {
-            super(ob, R.layout.list_item_directions,directions);
+        DirectionAdapter(Context ob, Direction[] directions) {
+            super(ob, R.layout.list_item_directions, directions);
         }
 
         @Override
@@ -302,8 +326,8 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private class GroupAdapter extends ArrayAdapter<Group> {
 
-        GroupAdapter(Context ob, Group [] group) {
-            super(ob, R.layout.list_item_groups,group);
+        GroupAdapter(Context ob, Group[] group) {
+            super(ob, R.layout.list_item_groups, group);
         }
 
         @Override

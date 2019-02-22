@@ -9,7 +9,7 @@
 
     <!-- activity_registration-->
     <string name="registration">Регистрация</string>>
-    <string name="fio">ФИО(полностью)</string>>
+    <string name="fio">ФИО(Пример:Иванов И.И.)</string>>
     <string name="login_r">Логин</string>
     <string name="password_r">Пароль</string>
     <string name="phone">Телефон (Пример:8-800-555-35-35)</string>

@@ -3,17 +3,18 @@ package com.example.ivan.loginapp;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
+import java.util.Set;
 
 public class Test {
     private Integer idTest;
     private String testName;
     private Date dateEdit;
-    //@JsonFormat (pattern = "yyyy-MM-dd-HH:mm:ss")
+    @JsonFormat (pattern = "yyyy-MM-dd HH:mm:ss")
     private Date timer;
     private User user;
     private Subject subject;
     private Semester semester;
-    private Question questions;
+    private Set<Question> questions;
 
     public Test(){
 
@@ -75,11 +76,11 @@ public class Test {
         this.semester = semester;
     }
 
-    public Question getQuestions() {
+    public Set<Question> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(Question questions) {
+    public void setQuestions(Set<Question> questions) {
         this.questions = questions;
     }
 }

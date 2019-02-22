@@ -7,7 +7,7 @@ public class Answer {
     private String answerText;
     private Date dateEdit;
     private String dirImage;
-    private  String dirAudio;
+    private String dirAudio;
     private String dirVideo;
     private Boolean correct;
     private User user;

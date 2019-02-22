@@ -2,6 +2,7 @@ package com.example.ivan.loginapp;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.ivan.loginapp.rest.Connection;
@@ -13,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 
 public class SingletUsers {
     private static SingletUsers sSingletUsers;
-
     private List<User> mUsers;
 
     public static SingletUsers get(Context context) {
@@ -29,26 +29,17 @@ public class SingletUsers {
 
     }
 
-    public List<User> getUsers() {
+    public List<User> getUsers(ProgressBar progressBar)
+    {
          OutputUsersTask task = new OutputUsersTask();
          task.execute();
          try {
-             //TimeUnit.MILLISECONDS.sleep(500);
         }
         catch(Exception e){
             e.printStackTrace();
         }
         return mUsers;
     }
-
-    //public User getUser(UUID id){
-    //for (User user : mUsers){
-    //if (user.getIdUser().equals(id)) {
-    //return user;
-    //}
-    //}
-    ;
-    //}
 
     private class OutputUsersTask extends AsyncTask<Void, Void, User[]> {
 
@@ -66,9 +57,14 @@ public class SingletUsers {
 
         protected void onPostExecute(User[] users) {
 
+            if (mUsers.size()>0) {
+                mUsers = new ArrayList<>();
+            }
+
             for (int i = 0; i < users.length; i++) {
                 mUsers.add(users[i]);
             }
+
         }
     }
 }

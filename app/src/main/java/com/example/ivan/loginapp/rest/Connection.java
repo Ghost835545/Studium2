@@ -5,11 +5,13 @@ import android.util.Log;
 import com.example.ivan.loginapp.Direction;
 import com.example.ivan.loginapp.Faculty;
 import com.example.ivan.loginapp.Group;
+import com.example.ivan.loginapp.Test;
 import com.example.ivan.loginapp.User;
 import com.example.ivan.loginapp.activity.Security;
 import com.example.ivan.loginapp.rest.url.URLDirectionService;
 import com.example.ivan.loginapp.rest.url.URLFacultyService;
 import com.example.ivan.loginapp.rest.url.URLGroupService;
+import com.example.ivan.loginapp.rest.url.URLTestService;
 import com.example.ivan.loginapp.rest.url.URLUserService;
 import com.example.ivan.loginapp.rest.url.URLWebService;
 
@@ -72,9 +74,11 @@ public class Connection {
         return directions;
     }
 
+
+
     public User[] getUsers() {
         HttpEntity<User[]> request = new HttpEntity<>(headers);
-        User[] users = rest.exchange(URLWebService.URL + URLUserService.URL_USERS, HttpMethod.GET, new HttpEntity<User[]>(headers), User[].class).getBody();
+        User[] users = rest.exchange(URLWebService.URL + URLUserService.URL_USERS, HttpMethod.GET, request, User[].class).getBody();
         return users;
     }
 
@@ -84,6 +88,12 @@ public class Connection {
         return newuser;
 
     }
+    public Test[] getTests() {
+        HttpEntity<Test[]> request = new HttpEntity<>(headers);
+        Test[] tests = rest.exchange(URLWebService.URL + URLTestService.URL_TESTS, HttpMethod.GET, request, Test[].class).getBody();
+        return tests;
+    }
+
     public User signIn(String login, String password) {
         User user = null;
         try {

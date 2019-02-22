@@ -2,11 +2,13 @@ package com.example.ivan.loginapp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.Set;
+
 public class Theme {
     private Integer idTheme;
     private String themeText;
     @JsonIgnore
-    private Question questions;
+    private Set<Question> questions;
 
     public Theme() {
     }
@@ -27,11 +29,11 @@ public class Theme {
         this.themeText = themeText;
     }
 
-    public Question getQuestions() {
+    public Set<Question> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(Question questions) {
+    public void setQuestions(Set<Question> questions) {
         this.questions = questions;
     }
 }
