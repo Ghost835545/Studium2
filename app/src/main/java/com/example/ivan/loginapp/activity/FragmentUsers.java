@@ -2,6 +2,7 @@ package com.example.ivan.loginapp.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -33,40 +34,74 @@ import android.widget.TextView;
 
 import com.example.ivan.loginapp.Group;
 import com.example.ivan.loginapp.R;
+import com.example.ivan.loginapp.SingletTests;
 import com.example.ivan.loginapp.SingletUsers;
+import com.example.ivan.loginapp.Test;
 import com.example.ivan.loginapp.User;
 import com.example.ivan.loginapp.rest.Connection;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentUsers extends Fragment {
 
     private RecyclerView mUserRecyclerView;
     private UserAdapter mAdapter;
-    private ProgressBar progressBar;
+    public ProgressBar progressBar;
+    public ArrayList<User> mUsers;
 
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstance) {
         View view = inflater.inflate(R.layout.fragment_users, container, false);
         getActivity().setTitle("Список пользователей");
-        progressBar = (ProgressBar) view.findViewById(R.id.fragment_progress_users);
+        progressBar = (ProgressBar)  view.findViewById(R.id.fragment_progress_users);
         mUserRecyclerView = (RecyclerView) view.findViewById(R.id.user_recycler_view);
         mUserRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        updateUI();
+        OutputTestsTask task = new OutputTestsTask();
+        task.execute();
         return view;
     }
 
 
-    private void updateUI( ) {
+    private class OutputTestsTask extends AsyncTask<Void, Void, User[]> {
 
-        SingletUsers singletUser = SingletUsers.get(getActivity());
-        List <User> users = singletUser.getUsers(progressBar);
-        mAdapter = new UserAdapter(users);
-        mUserRecyclerView.setAdapter(mAdapter);
+        @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+            super.onPreExecute();
+        }
+
+        @Override
+        protected User[] doInBackground(Void... params) {
+            try {
+                User[] users = new Connection().getUsers( );
+                return users;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        protected void onPostExecute(User[] users) {
+
+                if (mUsers == null) {
+                    mUsers = new ArrayList<>();
+                }
+
+
+                for (int i = 0; i < users.length; i++) {
+                    mUsers.add(users[i]);
+                }
+            SingletUsers singletUsers = SingletUsers.get(getActivity());
+            List <User> user = singletUsers.getUsers(mUsers);
+            mAdapter = new FragmentUsers.UserAdapter(user);
+            mUserRecyclerView.setAdapter(mAdapter);
+            progressBar.setVisibility(View.GONE);
+
+        }
     }
 
-
-    private class UserHolder extends RecyclerView.ViewHolder {
+    private class UserHolder extends RecyclerView.ViewHolder{
         private TextView mTitleTextView;
         private TextView mEmailTextView;
         private TextView mGroupTextView;

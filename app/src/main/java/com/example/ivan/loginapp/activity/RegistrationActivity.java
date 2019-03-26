@@ -28,7 +28,6 @@ import java.util.List;
 
 public class RegistrationActivity extends AppCompatActivity {
     public Role Role;
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);

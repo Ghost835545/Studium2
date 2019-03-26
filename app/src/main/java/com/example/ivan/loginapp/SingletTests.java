@@ -2,6 +2,7 @@ package com.example.ivan.loginapp;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.ivan.loginapp.rest.Connection;
@@ -29,33 +30,9 @@ public class SingletTests {
 
     }
 
-    public List<Test> getTests() {
-        OutputUsersTask task = new OutputUsersTask();
-        task.execute();
+    public List<Test> getTests(List<Test> tests) {
+        mTests=tests;
         return mTests;
     }
 
-    private class OutputUsersTask extends AsyncTask<Void, Void, Test[]> {
-
-        @Override
-        protected Test[] doInBackground(Void... params) {
-            try {
-                Test[] tests = new Connection().getTests();
-                return tests;
-
-            } catch (Exception e) {
-
-            }
-            return null;
-        }
-
-        protected void onPostExecute(Test[] tests) {
-            if (mTests.size() > 0){
-                mTests = new ArrayList<>();
-            }
-                for (int i = 0; i < tests.length; i++) {
-                    mTests.add(tests[i]);
-                }
-        }
-    }
 }

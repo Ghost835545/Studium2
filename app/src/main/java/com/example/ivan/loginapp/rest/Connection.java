@@ -1,13 +1,17 @@
 package com.example.ivan.loginapp.rest;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
+import com.example.ivan.loginapp.Answer;
 import com.example.ivan.loginapp.Direction;
 import com.example.ivan.loginapp.Faculty;
 import com.example.ivan.loginapp.Group;
 import com.example.ivan.loginapp.Test;
 import com.example.ivan.loginapp.User;
 import com.example.ivan.loginapp.activity.Security;
+import com.example.ivan.loginapp.rest.url.URLAnswerService;
 import com.example.ivan.loginapp.rest.url.URLDirectionService;
 import com.example.ivan.loginapp.rest.url.URLFacultyService;
 import com.example.ivan.loginapp.rest.url.URLGroupService;
@@ -26,6 +30,8 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+
 
 public class Connection {
     private HttpHeaders headers;
@@ -38,7 +44,6 @@ public class Connection {
     }
 
     private ClientHttpRequestFactory getClientRequestFactory() {
-
         int timeout = 4000;
         HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
         clientHttpRequestFactory.setReadTimeout(timeout);
@@ -58,25 +63,35 @@ public class Connection {
     public Group[] getGroups(int id) {
 
         HttpEntity<Group[]> request = new HttpEntity<>(headers);
-        Group[] groups = rest.exchange(URLWebService.URL + URLGroupService.URL_GROUPS_BY_DIRECTION+"?id="+id, HttpMethod.GET, request, Group[].class).getBody();
+        Group[] groups = rest.exchange(URLWebService.URL + URLGroupService.URL_GROUPS_BY_DIRECTION + "?id=" + id, HttpMethod.GET, request, Group[].class).getBody();
         return groups;
     }
 
-    public Faculty[] getFaculty(){
+    public Faculty[] getFaculty() {
         HttpEntity<Faculty> request = new HttpEntity<>(headers);
-        Faculty[] faculties = rest.exchange(URLWebService.URL+ URLFacultyService.URL_FACULTIES,HttpMethod.GET,request,Faculty[].class).getBody();
+        Faculty[] faculties = rest.exchange(URLWebService.URL + URLFacultyService.URL_FACULTIES, HttpMethod.GET, request, Faculty[].class).getBody();
         return faculties;
     }
 
-    public Direction[] getDirections(int id){
+    public Direction[] getDirections(int id) {
         HttpEntity<Direction> request = new HttpEntity<>(headers);
-        Direction[] directions = rest.exchange(URLWebService.URL+ URLDirectionService.URL_DIRECTIONS_BY_FACULTY+"?id="+id,HttpMethod.GET,request, Direction[].class).getBody();
+        Direction[] directions = rest.exchange(URLWebService.URL + URLDirectionService.URL_DIRECTIONS_BY_FACULTY + "?id=" + id, HttpMethod.GET, request, Direction[].class).getBody();
         return directions;
     }
 
-
+    public Answer[] getAnswersByQuestion(Integer id) {
+        Answer[] answers = null;
+        try {
+            HttpEntity<Answer> request = new HttpEntity<>(headers);
+            answers = rest.exchange(URLWebService.URL + URLAnswerService.URL_ANSWER_BY_QUESTION + "?id=" + id, HttpMethod.GET, request, Answer[].class).getBody();
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+        return answers;
+    }
 
     public User[] getUsers() {
+
         HttpEntity<User[]> request = new HttpEntity<>(headers);
         User[] users = rest.exchange(URLWebService.URL + URLUserService.URL_USERS, HttpMethod.GET, request, User[].class).getBody();
         return users;
@@ -88,6 +103,7 @@ public class Connection {
         return newuser;
 
     }
+
     public Test[] getTests() {
         HttpEntity<Test[]> request = new HttpEntity<>(headers);
         Test[] tests = rest.exchange(URLWebService.URL + URLTestService.URL_TESTS, HttpMethod.GET, request, Test[].class).getBody();
@@ -98,19 +114,17 @@ public class Connection {
         User user = null;
         try {
             HttpEntity<User> request = new HttpEntity<>(headers);
-            user = rest.exchange(URLWebService.URL + URLUserService.URL_SIGN_IN+ "?login=" + login, HttpMethod.GET, request, User.class).getBody();
+            user = rest.exchange(URLWebService.URL + URLUserService.URL_SIGN_IN + "?login=" + login, HttpMethod.GET, request, User.class).getBody();
             if (user != null) {
                 String passUser = user.getPassword();
                 passUser = Security.decryptPass(passUser);
                 if (!passUser.equals(password))
                     user = null;
             }
-        }
-        catch (Exception e)
-        {
-            Log.e("errorC",e.getMessage());
+        } catch (Exception e) {
+            Log.e("errorC", e.getMessage());
             e.printStackTrace();
-    }
+        }
         return user;
 
     }

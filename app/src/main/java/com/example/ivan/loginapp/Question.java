@@ -1,5 +1,6 @@
 package com.example.ivan.loginapp;
 
+import com.example.ivan.loginapp.rest.Connection;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class Question {
     private String dirVideo;
     private User user;
     @JsonIgnore
-    private ArrayList<Answer> answers;
+    private Answer[] answers;
     @JsonIgnore
     private Boolean inTest;
 
@@ -96,11 +97,11 @@ public class Question {
         this.user = user;
     }
 
-    public ArrayList<Answer> getAnswers() {
+    public Answer[] getAnswers() {
         return answers;
     }
 
-    public void setAnswers(ArrayList<Answer> answers) {
+    public void setAnswers(Answer[] answers) {
         this.answers = answers;
     }
 
@@ -110,5 +111,10 @@ public class Question {
 
     public void setInTest(Boolean inTest) {
         this.inTest = inTest;
+    }
+
+    public void initAnswers() {
+        Connection rest = new Connection();
+        answers = rest.getAnswersByQuestion(getIdQuestion());
     }
 }
