@@ -394,7 +394,6 @@ public class TestActivity extends AppCompatActivity {
             AnswerQuesTask answerQuesAsync = new AnswerQuesTask(resultQuestion, resultQuestions);
             Thread thread = new Thread(answerQuesAsync);
             thread.start();
-            //resultQuestionsAll.set(position, resultQuestions);
 
         }
 
