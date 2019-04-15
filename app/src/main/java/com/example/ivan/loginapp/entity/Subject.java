@@ -1,8 +1,9 @@
-package com.example.ivan.loginapp;
+package com.example.ivan.loginapp.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Set;
 
 public class Subject {
@@ -47,5 +48,20 @@ public class Subject {
 
     public void setTests(ArrayList<Test> tests) {
         this.tests = tests;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Subject subject = (Subject) o;
+        return Objects.equals(idSubject, subject.idSubject) &&
+                Objects.equals(subjectName, subject.subjectName) &&
+                Objects.equals(directions, subject.directions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idSubject, subjectName);
     }
 }

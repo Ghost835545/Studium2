@@ -1,6 +1,7 @@
-package com.example.ivan.loginapp;
+package com.example.ivan.loginapp.entity;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class ResultTest {
     private Integer idResult;
@@ -60,5 +61,23 @@ public class ResultTest {
 
     public void setTest(Test test) {
         this.test = test;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ResultTest that = (ResultTest) o;
+        return Objects.equals(idResult, that.idResult) &&
+                Objects.equals(user, that.user) &&
+                Objects.equals(test, that.test) &&
+                Objects.equals(dateBegin, that.dateBegin) &&
+                Objects.equals(dateEnd, that.dateEnd) &&
+                Objects.equals(mark, that.mark);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idResult, user, test, dateBegin, dateEnd, mark);
     }
 }

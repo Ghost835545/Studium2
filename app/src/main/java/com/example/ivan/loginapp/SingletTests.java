@@ -1,16 +1,11 @@
 package com.example.ivan.loginapp;
 
 import android.content.Context;
-import android.os.AsyncTask;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.example.ivan.loginapp.rest.Connection;
+import com.example.ivan.loginapp.entity.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class SingletTests {
     private static SingletTests sSingletTests;

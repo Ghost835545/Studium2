@@ -1,6 +1,7 @@
-package com.example.ivan.loginapp;
+package com.example.ivan.loginapp.entity;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Answer {
     private Integer idAnswer;
@@ -87,5 +88,26 @@ public class Answer {
 
     public void setQuestion(Question question) {
         this.question = question;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Answer answer = (Answer) o;
+        return Objects.equals(idAnswer, answer.idAnswer) &&
+                Objects.equals(answerText, answer.answerText) &&
+                Objects.equals(dateEdit, answer.dateEdit) &&
+                Objects.equals(dirImage, answer.dirImage) &&
+                Objects.equals(dirAudio, answer.dirAudio) &&
+                Objects.equals(dirVideo, answer.dirVideo) &&
+                Objects.equals(correct, answer.correct) &&
+                Objects.equals(user, answer.user
+                );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idAnswer, answerText, dateEdit, dirImage, dirAudio, dirVideo, correct, user);
     }
 }

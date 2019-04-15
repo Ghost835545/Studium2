@@ -1,43 +1,21 @@
 package com.example.ivan.loginapp.activity;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.example.ivan.loginapp.Group;
 import com.example.ivan.loginapp.R;
-import com.example.ivan.loginapp.SingletTests;
 import com.example.ivan.loginapp.SingletUsers;
-import com.example.ivan.loginapp.Test;
-import com.example.ivan.loginapp.User;
+import com.example.ivan.loginapp.entity.User;
 import com.example.ivan.loginapp.rest.Connection;
 
 import java.util.ArrayList;
@@ -120,7 +98,7 @@ public class FragmentUsers extends Fragment {
         public void bind(User user) {
             mUser = user;
             mTitleTextView.setText(mUser.getFio());
-            mGroupTextView.setText("Группа: " + mUser.getGroup().toString());
+            mGroupTextView.setText("Группа: " + mUser.getGroup());
             mEmailTextView.setText("Email: " + mUser.getEmail());
 
         }

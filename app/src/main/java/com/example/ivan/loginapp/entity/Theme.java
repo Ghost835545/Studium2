@@ -1,7 +1,9 @@
-package com.example.ivan.loginapp;
+package com.example.ivan.loginapp.entity;
 
+import com.example.ivan.loginapp.entity.Question;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.Objects;
 import java.util.Set;
 
 public class Theme {
@@ -35,5 +37,19 @@ public class Theme {
 
     public void setQuestions(Set<Question> questions) {
         this.questions = questions;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Theme theme = (Theme) o;
+        return Objects.equals(idTheme, theme.idTheme) &&
+                Objects.equals(themeText, theme.themeText);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idTheme, themeText);
     }
 }

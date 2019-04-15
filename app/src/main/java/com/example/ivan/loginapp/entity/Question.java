@@ -1,23 +1,27 @@
-package com.example.ivan.loginapp;
+package com.example.ivan.loginapp.entity;
 
 import com.example.ivan.loginapp.rest.Connection;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
+import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Question {
     private Integer idQuestion;
     private String questionText;
     private Theme theme;
-    private Date dateReg;
+    private Date dateEdit;
     private Integer questionType;
     private String dirImage;
     private String dirAudio;
     private String dirVideo;
     private User user;
     @JsonIgnore
-    private Answer[] answers;
+    private List <Answer> answers;
     @JsonIgnore
     private Boolean inTest;
 
@@ -49,12 +53,12 @@ public class Question {
         this.theme = theme;
     }
 
-    public Date getDateReg() {
-        return dateReg;
+    public Date getDateEdit() {
+        return dateEdit;
     }
 
-    public void setDateReg(Date dateReg) {
-        this.dateReg = dateReg;
+    public void setDateEdit(Date dateEdit) {
+        this.dateEdit = dateEdit;
     }
 
     public Integer getQuestionType() {
@@ -97,11 +101,11 @@ public class Question {
         this.user = user;
     }
 
-    public Answer[] getAnswers() {
+    public List <Answer> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(Answer[] answers) {
+    public void setAnswers(List <Answer> answers) {
         this.answers = answers;
     }
 
@@ -115,6 +119,41 @@ public class Question {
 
     public void initAnswers() {
         Connection rest = new Connection();
-        answers = rest.getAnswersByQuestion(getIdQuestion());
+         answers = rest.getAnswersByQuestion(getIdQuestion());
+         shuffleArray(answers);
+
+    }
+    public void shuffleArray(List ar)
+    {
+        // If running on Java 6 or older, use `new Random()` on RHS here
+        Random rnd = ThreadLocalRandom.current();
+        for (int i = ar.size() - 1; i > 0; i--)
+        {
+            int index = rnd.nextInt(i + 1);
+            // Simple swap
+            Object a = ar.get(index);
+            ar.set(index,ar.get(i));
+            ar.set(i,a);
+        }
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Question question = (Question) o;
+        return Objects.equals(idQuestion, question.idQuestion) &&
+                Objects.equals(questionText, question.questionText) &&
+                Objects.equals(theme, question.theme) &&
+                Objects.equals(dateEdit, question.dateEdit) &&
+                Objects.equals(questionType, question.questionType) &&
+                Objects.equals(dirImage, question.dirImage) &&
+                Objects.equals(dirAudio, question.dirAudio) &&
+                Objects.equals(dirVideo, question.dirVideo) &&
+                Objects.equals(user, question.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idQuestion, questionText, theme, dateEdit, questionType, dirImage, dirAudio, dirVideo, user);
     }
 }

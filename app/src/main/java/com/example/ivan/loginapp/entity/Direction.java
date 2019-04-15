@@ -1,6 +1,8 @@
-package com.example.ivan.loginapp;
+package com.example.ivan.loginapp.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.Objects;
 
 public class Direction {
     private Integer idDirection;
@@ -48,5 +50,20 @@ public class Direction {
     @Override
     public String toString() {
         return directionName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Direction direction = (Direction) o;
+        return Objects.equals(idDirection, direction.idDirection) &&
+                Objects.equals(directionName, direction.directionName) &&
+                Objects.equals(inSubject, direction.inSubject);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idDirection, directionName, inSubject);
     }
 }

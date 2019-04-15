@@ -5,25 +5,20 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 
-import com.example.ivan.loginapp.Direction;
-import com.example.ivan.loginapp.Faculty;
-import com.example.ivan.loginapp.Group;
+import com.example.ivan.loginapp.entity.Direction;
+import com.example.ivan.loginapp.entity.Faculty;
+import com.example.ivan.loginapp.entity.Group;
 import com.example.ivan.loginapp.R;
-import com.example.ivan.loginapp.Role;
-import com.example.ivan.loginapp.User;
-import com.example.ivan.loginapp.editSpinner.NothingSelectedSpinnerAdapter;
+import com.example.ivan.loginapp.entity.Role;
+import com.example.ivan.loginapp.entity.User;
 import com.example.ivan.loginapp.rest.Connection;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 
 public class RegistrationActivity extends AppCompatActivity {

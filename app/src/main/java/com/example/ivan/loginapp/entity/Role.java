@@ -1,4 +1,6 @@
-package com.example.ivan.loginapp;
+package com.example.ivan.loginapp.entity;
+
+import java.util.Objects;
 
 public class Role {
 
@@ -32,5 +34,20 @@ public class Role {
 
     public void setAccess(Integer access) {
         this.access = access;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role = (Role) o;
+        return Objects.equals(idRole, role.idRole) &&
+                Objects.equals(roleName, role.roleName) &&
+                Objects.equals(access, role.access);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idRole, roleName, access);
     }
 }

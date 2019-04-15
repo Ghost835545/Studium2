@@ -1,8 +1,9 @@
-package com.example.ivan.loginapp;
+package com.example.ivan.loginapp.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 
 public class Test {
@@ -13,7 +14,6 @@ public class Test {
     private Date timer;
     private User user;
     private Subject subject;
-    private Semester semester;
     private Set<Question> questions;
 
     public Test(){
@@ -68,19 +68,30 @@ public class Test {
         this.subject = subject;
     }
 
-    public Semester getSemester() {
-        return semester;
-    }
-
-    public void setSemester(Semester semester) {
-        this.semester = semester;
-    }
-
     public Set<Question> getQuestions() {
         return questions;
     }
 
     public void setQuestions(Set<Question> questions) {
         this.questions = questions;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Test test = (Test) o;
+        return Objects.equals(idTest, test.idTest) &&
+                Objects.equals(testName, test.testName) &&
+                Objects.equals(dateEdit, test.dateEdit) &&
+                Objects.equals(timer, test.timer) &&
+                Objects.equals(user, test.user) &&
+                Objects.equals(subject, test.subject) &&
+                Objects.equals(questions, test.questions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idTest, testName, dateEdit, timer, user, subject);
     }
 }

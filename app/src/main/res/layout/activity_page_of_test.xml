@@ -1,4 +1,5 @@
 <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/page_of_test"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -48,17 +49,25 @@
         android:gravity="center"
         android:textSize="18dp">
     </TextView>
-
+    <ProgressBar
+        android:layout_column="1"
+        android:layout_columnSpan="2"
+        android:id="@+id/pr_activity_page_of_test"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone" />
     <ListView
         android:id="@+id/list_answers"
         android:layout_width="match_parent"
-        android:layout_height="73dp"
+        android:layout_height="430dp"
         android:layout_row="2"
         android:layout_column="0"
         android:layout_columnSpan="4"
         android:gravity="center">
     </ListView>
-
     <ImageButton
         android:id="@+id/button_left"
         android:layout_width="wrap_content"
@@ -71,7 +80,7 @@
     </ImageButton>
 
     <ImageButton
-        android:id="@+id/finished_test"
+        android:id="@+id/button_finished"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_row="6"

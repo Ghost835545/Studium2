@@ -1,8 +1,11 @@
-package com.example.ivan.loginapp;
+package com.example.ivan.loginapp.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.example.ivan.loginapp.entity.Direction;
+import com.example.ivan.loginapp.entity.Group;
+import com.example.ivan.loginapp.entity.Role;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class User {
     private Integer idUser;
@@ -121,5 +124,29 @@ public class User {
     @Override
     public String toString() {
         return "Привет, " + getFio();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(idUser, user.idUser) &&
+                Objects.equals(fio, user.fio) &&
+                Objects.equals(login, user.login) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(dateReg, user.dateReg) &&
+                Objects.equals(dateAuth, user.dateAuth) &&
+                Objects.equals(phone, user.phone) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(status, user.status) &&
+                Objects.equals(role, user.role) &&
+                Objects.equals(group, user.group) &&
+                Objects.equals(direction, user.direction);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idUser, fio, login, password, dateReg, dateAuth, phone, email, status, role, group, direction);
     }
 }

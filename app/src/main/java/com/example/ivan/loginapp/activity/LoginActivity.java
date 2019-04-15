@@ -30,12 +30,11 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.example.ivan.loginapp.R;
 
-import com.example.ivan.loginapp.User;
+import com.example.ivan.loginapp.entity.User;
 import com.example.ivan.loginapp.rest.Connection;
 
 //import org.apache.tomcat.util.codec.binary.Base64;
@@ -120,12 +119,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
     }
-    public void startNavigationActivity(String Fio, Integer idRole, String Namegroup, Integer idUser)
+    public void startNavigationActivity(String Fio, Integer idRole, String USER_LOGIN, Integer idUser)
     {
         Intent intent = new Intent(this, NavigationActivity.class);
         intent.putExtra("Fio",Fio);
         intent.putExtra("idRole",idRole);
-        intent.putExtra("Namegroup",Namegroup);
+        intent.putExtra("USER_LOGIN",USER_LOGIN);
         intent.putExtra("idUser",idUser);
         startActivity(intent);
 
@@ -360,9 +359,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (success) {
                 String Fio = user.getRole().getRoleName()+"\n"+"\n"+user.getFio();
                 Integer idRole = user.getRole().getIdRole();
-                String Namegroup = user.getGroup().getGroupName();
+                String USER_LOGIN= user.getLogin();
                 Integer idUser = user.getIdUser();
-                startNavigationActivity(Fio, idRole, Namegroup, idUser);
+                startNavigationActivity(Fio, idRole, USER_LOGIN, idUser);
                 //Toast.makeText(getApplicationContext(), user.getFio()+" "+user.getEmail(), Toast.LENGTH_SHORT).show();
 
             } else {

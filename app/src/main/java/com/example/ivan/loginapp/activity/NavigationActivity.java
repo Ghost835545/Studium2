@@ -21,6 +21,7 @@ public class NavigationActivity extends AppCompatActivity
 
     private EditText mPasswordView;;
     private AutoCompleteTextView mLoginView;
+    public String USER_LOGIN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,6 @@ public class NavigationActivity extends AppCompatActivity
         setContentView(R.layout.activity_navigation);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -39,6 +39,7 @@ public class NavigationActivity extends AppCompatActivity
         displaySelectedScreen(R.id.item_users);
         TextView Fio_header_nav = (TextView) navigationView.getHeaderView(0).findViewById(R.id.Fio_header_nav);
         Bundle extras = getIntent().getExtras();
+        USER_LOGIN= extras.getString("USER_LOGIN");
         if(extras != null)
         {
             String Fio = extras.getString("Fio");
@@ -66,7 +67,7 @@ public class NavigationActivity extends AppCompatActivity
         return true;
     }
 
-    private void displaySelectedScreen(int itemId) {
+    public void displaySelectedScreen(int itemId) {
         //creating fragment object
         Fragment fragment = null;
         //initializing the fragment object which is selected
@@ -79,7 +80,10 @@ public class NavigationActivity extends AppCompatActivity
                 fragment = new FragmentResult();
             break;
             case R.id.item_tests:
+                Bundle args = new Bundle();
+                args.putString("USER_LOGIN", USER_LOGIN);
                 fragment = new FragmentTests();
+                fragment.setArguments(args);
                 break;
         }
         //replacing the fragment
@@ -91,4 +95,6 @@ public class NavigationActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
     }
+
+
 }
