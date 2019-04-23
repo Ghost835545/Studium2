@@ -1,6 +1,8 @@
 package com.example.ivan.loginapp.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Observable;
 import android.databinding.ObservableArrayList;
@@ -22,8 +24,10 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ivan.loginapp.DownTimer;
+import com.example.ivan.loginapp.Variables;
 import com.example.ivan.loginapp.entity.Answer;
 import com.example.ivan.loginapp.entity.Question;
 import com.example.ivan.loginapp.R;
@@ -66,8 +70,11 @@ public class TestActivity extends AppCompatActivity {
     public ResultTest resultTest;
     public TextView textTimer;
     public DownTimer countDownTimer;
-    public int pos;
-    public String USER_LOGIN;
+    public Boolean clockEnd;
+    public AlertDialog.Builder ad;
+    public ImageButton buttonRight;
+    public ImageButton buttonLeft;
+    public ImageButton buttonFinished;
 
 
     @Override
@@ -80,15 +87,15 @@ public class TestActivity extends AppCompatActivity {
         countquestions = findViewById(R.id.countQ);
         extras = getIntent().getExtras();
         resultQuestions = new ConcurrentHashMap<>();
-        pos = extras.getInt("positionT");
-        setTitle(extras.getString("TestName"));
-        USER_LOGIN = extras.getString("USER_LOGIN");
+        setTitle(Variables.getTestName());
         OutputTestsTask task = new OutputTestsTask();
         task.execute();
-        final ImageButton buttonRight = findViewById(R.id.button_right);
-        final ImageButton buttonLeft = findViewById(R.id.button_left);
-        final ImageButton buttonFinished = findViewById(R.id.button_finished);
+        buttonRight = findViewById(R.id.button_right);
+        buttonLeft = findViewById(R.id.button_left);
+        buttonFinished = findViewById(R.id.button_finished);
         buttonLeft.setEnabled(false);
+        buttonRight.setEnabled(false);
+        buttonFinished.setEnabled(false);
 
         buttonRight.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,29 +126,71 @@ public class TestActivity extends AppCompatActivity {
                 }
             }
         });
-
-
         buttonFinished.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FixResultAsync fixResultAsync = new FixResultAsync();
-                fixResultAsync.execute();
-                startActivity();
+                ad = new AlertDialog.Builder(TestActivity.this);
+                ad.setTitle("Завершение тестирования.");
+                ad.setIcon(R.drawable.ic_error_outline_black_24dp);
+                ad.setMessage("Вы действительно хотите завершить тестирование?");
+                ad.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        countDownTimer.stopTimer();
+                        FixResultAsync fixResultAsync = new FixResultAsync();
+                        fixResultAsync.execute();
+                    }
+                });
+                ad.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                ad.show();
+
             }
         });
 
 
     }
 
-    public void startActivity(){
+    public void onBackPressed() {
+        ad = new AlertDialog.Builder(TestActivity.this);
+        ad.setTitle("Завершение тестирования.");
+        ad.setIcon(R.drawable.ic_error_outline_black_24dp);
+        ad.setMessage("Вы действительно хотите завершить тестирование?");
+        ad.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                countDownTimer.stopTimer();
+                FixResultAsync fixResultAsync = new FixResultAsync();
+                fixResultAsync.execute();
+            }
+        });
+        ad.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        ad.show();
+    }
+
+    public void runFixResult(Boolean timeEnd) {
+        clockEnd = timeEnd;
+        FixResultAsync fixResultAsync = new FixResultAsync();
+        fixResultAsync.execute();
+    }
+
+    public void startactivity() {
         finish();
-        NavigationActivity a = new NavigationActivity();
-        Intent intent = new Intent(this,NavigationActivity.class);
+        Variables.setIdTest(resultTest.getTest().getIdTest());
+        Variables.setIdResult(resultTest.getIdResult());
+        Intent intent = new Intent(this, NavigationActivity.class);
+        intent.putExtra("clockEnd", clockEnd);
+        intent.putExtra("flag_results", true);
         startActivity(intent);
-        //Fragment result_test = new FragmentResult();
-        //FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        //ft.replace(R.id.fragment_container, result_test);
-        //ft.commit();
     }
 
     public void shuffleArray(List ar) {
@@ -168,35 +217,31 @@ public class TestActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ResultTest resultTest) {
             super.onPostExecute(resultTest);
+            Variables.setMARK(resultTest.getMark());
+            startactivity();
         }
+
     }
 
     public void time(long time) {
         textTimer = (TextView) findViewById(R.id.timer);
-        countDownTimer = new DownTimer(textTimer, time);
+        countDownTimer = new DownTimer(textTimer, time, TestActivity.this);
     }
 
     public void resultTest() {
-        resultTest = new ResultTest();
-        resultTest.setDateBegin(new Date());
-        resultTest.setDateEnd(new Date(selectedTest.getTimer().getTime() + resultTest.getDateBegin().getTime()));
-        resultTest.setMark(new Float(0.0));
         MyThread threadUser = new MyThread();
         threadUser.start();
     }
 
     public class MyThread extends Thread {
         public void run() {
-            user = new Connection().getUsers_By_login(USER_LOGIN);
+            resultTest = new ResultTest();
+            resultTest.setDateBegin(new Date());
+            resultTest.setDateEnd(new Date(selectedTest.getTimer().getTime() + resultTest.getDateBegin().getTime()));
+            resultTest.setMark(new Float(0.0));
+            user = new Connection().getUsers_By_login(Variables.getUserLogin());
             resultTest.setUser(user);
             resultTest.setTest(selectedTest);
-            ThreadResultTest resultTest = new ThreadResultTest();
-            resultTest.start();
-        }
-    }
-
-    public class ThreadResultTest extends Thread {
-        public void run() {
             resultTest = new Connection().getResultTest(resultTest);
         }
     }
@@ -268,10 +313,9 @@ public class TestActivity extends AppCompatActivity {
         @Override
         protected Test doInBackground(Void... params) {
             try {
-                Test[] tests = new Connection().getTests();
-                mQuestions = new ArrayList<>(tests[pos].getQuestions());
+                mQuestions = new ArrayList<>(FragmentTests.getSelectedTest().getQuestions());
                 shuffleArray(mQuestions);
-                selectedTest = tests[pos];
+                selectedTest = FragmentTests.getSelectedTest();
                 selectedTest.getTimer().setHours(selectedTest.getTimer().getHours() + 13);
                 for (Question question : mQuestions)
                     question.initAnswers();
@@ -291,6 +335,8 @@ public class TestActivity extends AppCompatActivity {
             textquestion.setText(mQuestions.get(index).getQuestionText());
             countquestions.setText((index + 1) + "/" + mQuestions.size());
             progressBar.setVisibility(View.GONE);
+            buttonRight.setEnabled(true);
+            buttonFinished.setEnabled(true);
 
 
         }

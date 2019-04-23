@@ -1,6 +1,9 @@
 package com.example.ivan.loginapp.entity;
 
+import com.example.ivan.loginapp.rest.Connection;
+
 import java.util.Objects;
+import java.util.Set;
 
 public class ResultQuestion {
     private Integer idResultQuestion;
@@ -68,4 +71,6 @@ public class ResultQuestion {
     public int hashCode() {
         return Objects.hash(answer.getAnswerText(), user.getLogin(), question.getQuestionText(), resultTest.getIdResult());
     }
+
+
 }

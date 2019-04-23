@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.ivan.loginapp.R;
 import com.example.ivan.loginapp.SingletTests;
+import com.example.ivan.loginapp.Variables;
 import com.example.ivan.loginapp.entity.Answer;
 import com.example.ivan.loginapp.entity.Direction;
 import com.example.ivan.loginapp.entity.Faculty;
@@ -29,22 +30,23 @@ import com.example.ivan.loginapp.entity.User;
 import com.example.ivan.loginapp.rest.Connection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 public class FragmentTests extends Fragment {
 
+
     private RecyclerView mTestRecyclerView;
     private TestAdapter mAdapter;
     public ProgressBar progressBar;
     public ArrayList<Test> mTests;
-    private String USER_LOGIN;
+    private static Test selectedTest;
+    private Test [] tests;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstance) {
         View view = inflater.inflate(R.layout.fragment_tests, container, false);
         getActivity().setTitle("Список Тестов");
-        Bundle args = getArguments();
-        USER_LOGIN = args.getString("USER_LOGIN","0");
         progressBar = (ProgressBar) view.findViewById(R.id.fragment_progress_tests);
         mTestRecyclerView = (RecyclerView) view.findViewById(R.id.user_recycler_view_tests);
         mTestRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -64,10 +66,12 @@ public class FragmentTests extends Fragment {
         @Override
         protected Test[] doInBackground(Void... params) {
             try {
-                Test[] tests = new Connection().getTests();
-                return tests;
-            } catch (Exception e) {
-
+               tests = new Connection().getTests();
+            return tests;
+        }
+            catch(Exception exc)
+            {
+                exc.printStackTrace();
             }
             return null;
         }
@@ -77,10 +81,7 @@ public class FragmentTests extends Fragment {
             if (mTests == null) {
                 mTests = new ArrayList<>();
             }
-
-            for (int i = 0; i < tests.length; i++) {
-                mTests.add(tests[i]);
-            }
+            mTests.addAll(Arrays.asList(tests));
             SingletTests singletTest = SingletTests.get(getActivity());
             List<Test> test = singletTest.getTests(mTests);
             mAdapter = new FragmentTests.TestAdapter(test);
@@ -113,14 +114,22 @@ public class FragmentTests extends Fragment {
 
         @Override
         public void onClick(View view) {
-            String TestName = this.mTest.getTestName();
+            Variables.setTestName(this.mTest.getTestName());
             Integer positionT = getAdapterPosition();
+            if (tests != null){
+                setSelectedTest(tests[positionT]);
+            }
             Intent intent = new Intent(getActivity(), TestActivity.class);
-            intent.putExtra("TestName", TestName);
-            intent.putExtra("positionT",positionT);
-            intent.putExtra("USER_LOGIN",USER_LOGIN);
             startActivity(intent);
         }
+    }
+
+    public static Test getSelectedTest() {
+        return selectedTest;
+    }
+
+    public static void setSelectedTest(Test selectedTest) {
+        FragmentTests.selectedTest = selectedTest;
     }
 
     public class CreateUsers extends Thread{
@@ -176,7 +185,7 @@ public class FragmentTests extends Fragment {
             Theme theme = new Theme();
             theme.setIdTheme(26);
             theme.setThemeText("Арифметика");
-            User user = new Connection().getUsers_By_login(USER_LOGIN);
+            User user = new Connection().getUsers_By_login(Variables.getUserLogin());
             for (int i =0; i< 100000; i++)
             {
                 Question question = new Question();

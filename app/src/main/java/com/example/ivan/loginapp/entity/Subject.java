@@ -11,6 +11,7 @@ public class Subject {
     private Integer idSubject;
     private String subjectName;
     private Set<Direction> directions;
+    private Set<User> users;
     @JsonIgnore
     private ArrayList<Test> tests;
 
@@ -40,6 +41,14 @@ public class Subject {
 
     public void setDirections(Set<Direction> directions) {
         this.directions = directions;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     public ArrayList<Test> getTests() {

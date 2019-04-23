@@ -21,12 +21,22 @@ public class Question {
     private String dirVideo;
     private User user;
     @JsonIgnore
+    private Integer number;
+    @JsonIgnore
     private List <Answer> answers;
     @JsonIgnore
     private Boolean inTest;
 
     public Question(){
 
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 
     public Integer getIdQuestion() {

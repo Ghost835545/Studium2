@@ -46,51 +46,80 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.transform.Result;
+
 
 public class Connection {
     private HttpHeaders headers;
     private RestTemplate rest;
 
     public Connection() {
-        headers = createHeaders("administrator", "hardpassword");
-        rest = new RestTemplate(getClientRequestFactory());
-        rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        try {
+            headers = createHeaders("administrator", "hardpassword");
+            rest = new RestTemplate(getClientRequestFactory());
+            rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
     }
 
     private ClientHttpRequestFactory getClientRequestFactory() {
-        int timeout = 4000;
-        HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
-        clientHttpRequestFactory.setReadTimeout(timeout);
-        clientHttpRequestFactory.setConnectTimeout(timeout);
-        return clientHttpRequestFactory;
+        try {
+            int timeout = 4000;
+            HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+            clientHttpRequestFactory.setReadTimeout(timeout);
+            clientHttpRequestFactory.setConnectTimeout(timeout);
+            return clientHttpRequestFactory;
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+        return null;
     }
 
     private HttpHeaders createHeaders(String username, String password) {
-
-        HttpAuthentication httpAuthentication =
-                new HttpBasicAuthentication(username, password);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAuthorization(httpAuthentication);
-        return headers;
+        try {
+            HttpAuthentication httpAuthentication =
+                    new HttpBasicAuthentication(username, password);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAuthorization(httpAuthentication);
+            return headers;
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+        return null;
     }
 
     public Group[] getGroups(int id) {
-
-        HttpEntity<Group[]> request = new HttpEntity<>(headers);
-        Group[] groups = rest.exchange(URLWebService.URL + URLGroupService.URL_GROUPS_BY_DIRECTION + "?id=" + id, HttpMethod.GET, request, Group[].class).getBody();
-        return groups;
+        try {
+            HttpEntity<Group[]> request = new HttpEntity<>(headers);
+            Group[] groups = rest.exchange(URLWebService.URL + URLGroupService.URL_GROUPS_BY_DIRECTION + "?id=" + id, HttpMethod.GET, request, Group[].class).getBody();
+            return groups;
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+        return null;
     }
 
     public Faculty[] getFaculty() {
-        HttpEntity<Faculty> request = new HttpEntity<>(headers);
-        Faculty[] faculties = rest.exchange(URLWebService.URL + URLFacultyService.URL_FACULTIES, HttpMethod.GET, request, Faculty[].class).getBody();
-        return faculties;
+        try {
+            HttpEntity<Faculty> request = new HttpEntity<>(headers);
+            Faculty[] faculties = rest.exchange(URLWebService.URL + URLFacultyService.URL_FACULTIES, HttpMethod.GET, request, Faculty[].class).getBody();
+            return faculties;
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+        return null;
     }
 
     public Direction[] getDirections(int id) {
-        HttpEntity<Direction> request = new HttpEntity<>(headers);
-        Direction[] directions = rest.exchange(URLWebService.URL + URLDirectionService.URL_DIRECTIONS_BY_FACULTY + "?id=" + id, HttpMethod.GET, request, Direction[].class).getBody();
-        return directions;
+        try {
+            HttpEntity<Direction> request = new HttpEntity<>(headers);
+            Direction[] directions = rest.exchange(URLWebService.URL + URLDirectionService.URL_DIRECTIONS_BY_FACULTY + "?id=" + id, HttpMethod.GET, request, Direction[].class).getBody();
+            return directions;
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+        return null;
     }
 
     public List<Answer> getAnswersByQuestion(Integer id) {
@@ -98,7 +127,7 @@ public class Connection {
         try {
             HttpEntity<Answer> request = new HttpEntity<>(headers);
             answers = rest.exchange(URLWebService.URL + URLAnswerService.URL_ANSWER_BY_QUESTION + "?id=" + id, HttpMethod.GET, request, Answer[].class).getBody();
-            if (answers.length>0){
+            if (answers.length > 0) {
                 List<Answer> answerSet = Arrays.asList(answers);
                 return answerSet;
             }
@@ -110,75 +139,105 @@ public class Connection {
     }
 
     public User[] getUsers() {
-
-        HttpEntity<User[]> request = new HttpEntity<>(headers);
-        User[] users = rest.exchange(URLWebService.URL + URLUserService.URL_USERS, HttpMethod.GET, request, User[].class).getBody();
-        return users;
+        try {
+            HttpEntity<User[]> request = new HttpEntity<>(headers);
+            User[] users = rest.exchange(URLWebService.URL + URLUserService.URL_USERS, HttpMethod.GET, request, User[].class).getBody();
+            return users;
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+        return null;
     }
 
     public User getUsers_By_login(String USER_LOGIN) {
+        try {
             HttpEntity<User> request = new HttpEntity<>(headers);
-            User users = rest.exchange(URLWebService.URL + URLUserService.URL_USER_BY_LOGIN + "?login=" +USER_LOGIN, HttpMethod.GET, request, User.class).getBody();
-        return users;
+            User users = rest.exchange(URLWebService.URL + URLUserService.URL_USER_BY_LOGIN + "?login=" + USER_LOGIN, HttpMethod.GET, request, User.class).getBody();
+            return users;
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+        return null;
 
     }
 
     public User registUser(User user) {
-        HttpEntity<User> request = new HttpEntity<>(user, headers);
-        User newuser = rest.exchange(URLWebService.URL + URLUserService.URL_ADD, HttpMethod.POST, request, User.class).getBody();
-        return newuser;
+        try {
+            HttpEntity<User> request = new HttpEntity<>(user, headers);
+            User newuser = rest.exchange(URLWebService.URL + URLUserService.URL_ADD, HttpMethod.POST, request, User.class).getBody();
+            return newuser;
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+        return null;
     }
 
     public Test[] getTests() {
-        HttpEntity<Test[]> request = new HttpEntity<>(headers);
-        Test[] tests = rest.exchange(URLWebService.URL + URLTestService.URL_TESTS, HttpMethod.GET, request, Test[].class).getBody();
-        return tests;
+        try {
+            HttpEntity<Test[]> request = new HttpEntity<>(headers);
+            Test[] tests = rest.exchange(URLWebService.URL + URLTestService.URL_TESTS, HttpMethod.GET, request, Test[].class).getBody();
+            return tests;
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+        return null;
+    }
+    public Test getTestsById(int id_test) {
+        try {
+            HttpEntity<Test> request = new HttpEntity<>(headers);
+            Test tests = rest.exchange(URLWebService.URL + URLTestService.URL_TEST+"?id="+id_test, HttpMethod.GET, request, Test.class).getBody();
+            return tests;
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+        return null;
+    }
+    public ResultTest getResultTest(ResultTest result) {
+        try {
+            HttpEntity<ResultTest> request = new HttpEntity<>(result, headers);
+            ResultTest resultTest = rest.exchange(URLWebService.URL + URLResultTestService.URL_ADD, HttpMethod.POST, request, ResultTest.class).getBody();
+            return resultTest;
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+        return null;
     }
 
-    public ResultTest getResultTest(ResultTest result) {
-        HttpEntity<ResultTest> request = new HttpEntity<>(result,headers);
-        ResultTest resultTest = rest.exchange(URLWebService.URL + URLResultTestService.URL_ADD, HttpMethod.POST, request, ResultTest.class).getBody();
-        return resultTest;
-    }
-    public Group CreateGroup (Group group)
-    {
+    public Group CreateGroup(Group group) {
         Group createGroup = null;
         try {
             HttpEntity<Group> request = new HttpEntity<>(group, headers);
             createGroup = rest.exchange(URLWebService.URL + URLGroupService.URL_ADD, HttpMethod.POST, request, Group.class).getBody();
-        }
-        catch (Exception e) {
-        e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return createGroup;
     }
 
 
-    public Question createQuestion(Question question){
+    public Question createQuestion(Question question) {
         Question createQuestion = null;
         try {
             HttpEntity<Question> request = new HttpEntity<>(question, headers);
             createQuestion = rest.exchange(URLWebService.URL + URLQuestionService.URL_ADD, HttpMethod.POST, request, Question.class).getBody();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return createQuestion;
     }
-    public Answer createAnswer(Answer answer)
-    {
-            Answer createAnswer = null;
-            try {
-                HttpEntity<Answer> request = new HttpEntity<>(answer, headers);
-                 createAnswer = rest.exchange(URLWebService.URL + URLAnswerService.URL_ADD, HttpMethod.POST, request, Answer.class).getBody();
 
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-            return createAnswer;
+    public Answer createAnswer(Answer answer) {
+        Answer createAnswer = null;
+        try {
+            HttpEntity<Answer> request = new HttpEntity<>(answer, headers);
+            createAnswer = rest.exchange(URLWebService.URL + URLAnswerService.URL_ADD, HttpMethod.POST, request, Answer.class).getBody();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return createAnswer;
     }
+
     public User signIn(String login, String password) {
         User user = null;
         try {
@@ -213,7 +272,7 @@ public class Connection {
         ResultQuestion deleteResultQuestion = null;
         try {
             HttpEntity<ResultQuestion> request = new HttpEntity<>(headers);
-            deleteResultQuestion = rest.exchange(URLWebService.URL + URLResultQuestionService.URL_DELETE_BY_ID +"?id="+idResultQuestion, HttpMethod.GET, request, ResultQuestion.class).getBody();
+            deleteResultQuestion = rest.exchange(URLWebService.URL + URLResultQuestionService.URL_DELETE_BY_ID + "?id=" + idResultQuestion, HttpMethod.GET, request, ResultQuestion.class).getBody();
         } catch (Exception exc) {
             exc.printStackTrace();
         }
@@ -230,15 +289,16 @@ public class Connection {
         }
         return newResultQuestion;
     }
+
     public List<ResultQuestion> getResultQuestionByQuestionAndResultTest(Integer idQuestion, Integer idResult) {
-         List<ResultQuestion> resultQuestions = null;
+        List<ResultQuestion> resultQuestions = null;
         try {
             HttpEntity<Question> request = new HttpEntity<>(headers);
-            ResponseEntity<ResultQuestion[]>  responseEntity= rest.exchange(URLWebService.URL + URLResultQuestionService.URL_RESULT_QUESTIONS_BY_QUESTION_AND_RESULT_TEST+"?id_q=" + idQuestion + "&&id_r="+idResult, HttpMethod.GET, request, ResultQuestion[].class);
+            ResponseEntity<ResultQuestion[]> responseEntity = rest.exchange(URLWebService.URL + URLResultQuestionService.URL_RESULT_QUESTIONS_BY_QUESTION_AND_RESULT_TEST + "?id_q=" + idQuestion + "&&id_r=" + idResult, HttpMethod.GET, request, ResultQuestion[].class);
             ResultQuestion[] resultArray = responseEntity.getBody();
             if (resultArray != null) {
                 resultQuestions = new ArrayList<ResultQuestion>();
-               resultQuestions.addAll(Arrays.asList(resultArray));
+                resultQuestions.addAll(Arrays.asList(resultArray));
             }
         } catch (Exception exc) {
             exc.printStackTrace();
@@ -256,5 +316,22 @@ public class Connection {
         }
         return fixResultTest;
     }
+
+    public ResultQuestion[] getResultQuestions(int idResultTest) {
+        try {
+            HttpEntity<ResultQuestion[]> request = new HttpEntity<>(headers);
+            ResultQuestion[] resultQuestions = rest.exchange(URLWebService.URL + URLResultQuestionService.URL_RESULT_QUESTIONS_BY_RESULT_TEST + "?id=" + idResultTest, HttpMethod.GET, request, ResultQuestion[].class).getBody();
+            return resultQuestions;
+            /*ResultQuestion[] resultArray = responseEntity.getBody();
+            if (resultArray != null) {
+                resultQuestions = new ArrayList<ResultQuestion>();
+                resultQuestions.addAll(Arrays.asList(resultArray));
+            }*/
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+        return null;
+    }
+
 
 }

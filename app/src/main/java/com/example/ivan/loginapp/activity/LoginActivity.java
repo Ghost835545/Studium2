@@ -34,6 +34,7 @@ import android.widget.TextView;
 
 import com.example.ivan.loginapp.R;
 
+import com.example.ivan.loginapp.Variables;
 import com.example.ivan.loginapp.entity.User;
 import com.example.ivan.loginapp.rest.Connection;
 
@@ -119,12 +120,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
     }
-    public void startNavigationActivity(String Fio, Integer idRole, String USER_LOGIN, Integer idUser)
+    public void startNavigationActivity(String FIO, Integer idRole, String USER_LOGIN, Integer idUser)
     {
         Intent intent = new Intent(this, NavigationActivity.class);
-        intent.putExtra("Fio",Fio);
+        Variables.setFIO(FIO);
         intent.putExtra("idRole",idRole);
-        intent.putExtra("USER_LOGIN",USER_LOGIN);
+        Variables.setUserLogin(USER_LOGIN);
         intent.putExtra("idUser",idUser);
         startActivity(intent);
 
@@ -357,11 +358,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                String Fio = user.getRole().getRoleName()+"\n"+"\n"+user.getFio();
+                String FIO = user.getRole().getRoleName()+"\n"+"\n"+user.getFio();
                 Integer idRole = user.getRole().getIdRole();
                 String USER_LOGIN= user.getLogin();
                 Integer idUser = user.getIdUser();
-                startNavigationActivity(Fio, idRole, USER_LOGIN, idUser);
+                startNavigationActivity(FIO, idRole, USER_LOGIN, idUser);
                 //Toast.makeText(getApplicationContext(), user.getFio()+" "+user.getEmail(), Toast.LENGTH_SHORT).show();
 
             } else {

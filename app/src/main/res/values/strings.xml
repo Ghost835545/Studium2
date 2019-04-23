@@ -49,4 +49,8 @@
     <!-- activity_edit_password-->
     <string name="title_edit_password">Смена пароля</string>
 
+    <!-- results_of_selected_test-->
+    <string name="points_of_test">Баллы: </string>
+    <string name="errors_of_test">Ошибки: </string>
+
 </resources>

@@ -19,6 +19,7 @@ import com.example.ivan.loginapp.entity.User;
 import com.example.ivan.loginapp.rest.Connection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FragmentUsers extends Fragment {
@@ -65,11 +66,7 @@ public class FragmentUsers extends Fragment {
                 if (mUsers == null) {
                     mUsers = new ArrayList<>();
                 }
-
-
-                for (int i = 0; i < users.length; i++) {
-                    mUsers.add(users[i]);
-                }
+            mUsers.addAll(Arrays.asList(users));
             SingletUsers singletUsers = SingletUsers.get(getActivity());
             List <User> user = singletUsers.getUsers(mUsers);
             mAdapter = new FragmentUsers.UserAdapter(user);

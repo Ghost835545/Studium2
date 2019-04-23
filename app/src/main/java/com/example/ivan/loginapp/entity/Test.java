@@ -59,7 +59,6 @@ public class Test {
     public void setUser(User user) {
         this.user = user;
     }
-
     public Subject getSubject() {
         return subject;
     }

@@ -8,4 +8,4 @@ public class URLTestService {
     public static final String URL_DELETE = URL + "/delete";
     public static final String URL_UPDATE = URL + "/update";
     public static final String URL_TESTS_BY_SUBJECT = URL + "/tests_by_subject";
-}
+        }

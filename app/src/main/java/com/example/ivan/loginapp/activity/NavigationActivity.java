@@ -1,5 +1,6 @@
 package com.example.ivan.loginapp.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -15,17 +16,28 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.ivan.loginapp.R;
+import com.example.ivan.loginapp.Variables;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private EditText mPasswordView;;
     private AutoCompleteTextView mLoginView;
-    public String USER_LOGIN;
+    private Boolean flag_results;
+    private Boolean clockEnd;
+    private Bundle extras;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        extras = getIntent().getExtras();
+        flag_results = extras.getBoolean("flag_results");
+        clockEnd = extras.getBoolean("clockEnd");
+        if (flag_results)
+        {
+            startactivity();
+        }
         setContentView(R.layout.activity_navigation);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -36,19 +48,25 @@ public class NavigationActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        displaySelectedScreen(R.id.item_users);
+        displaySelectedScreen(R.id.item_tests);
         TextView Fio_header_nav = (TextView) navigationView.getHeaderView(0).findViewById(R.id.Fio_header_nav);
-        Bundle extras = getIntent().getExtras();
-        USER_LOGIN= extras.getString("USER_LOGIN");
-        if(extras != null)
+
+
+        if(Variables.getFIO() != null)
         {
-            String Fio = extras.getString("Fio");
-            Fio_header_nav.setText(Fio);
+            Fio_header_nav.setText(Variables.getFIO());
         }
 
 
 
 
+    }
+
+    public void startactivity()
+    {
+        Intent intent = new Intent(this,ResultsOfSelectedTestActivity.class);
+        intent.putExtra("clockEnd",clockEnd);
+        startActivity(intent);
     }
     @Override
     public void onBackPressed() {
@@ -80,10 +98,7 @@ public class NavigationActivity extends AppCompatActivity
                 fragment = new FragmentResult();
             break;
             case R.id.item_tests:
-                Bundle args = new Bundle();
-                args.putString("USER_LOGIN", USER_LOGIN);
                 fragment = new FragmentTests();
-                fragment.setArguments(args);
                 break;
         }
         //replacing the fragment
